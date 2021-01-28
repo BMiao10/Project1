@@ -2,61 +2,44 @@
 import numpy as np
 
 class PairwiseAligner:
-    """
-    Main parent class containing shared alignment functions and variables
-    for Smith-Waterman and Needleman-Wunsch flavored alginments
-    
-    Attributes
-    ----------
-        align_mat : np.ndarray
-            Matrix to keep track of scores for matching
-        gapA_mat : np.ndarray
-            Matrix to keep track of scores for adding gaps to seqA
-        gapB_mat : np.ndarray
-            Matrix to keep track of scores for adding gaps to seqB
-        back : np.ndarray
-            Matrix that keeps track of pointers for backtracking through match matrix
-        back_A  : np.ndarray
-            Matrix that keeps track of pointers for backtracking through gap A matrix
-        back_B  : np.ndarray
-            Matrix that keeps track of pointers for backtracking through gap B matrix
-        opt_score : int
-            Variable to keep track of final alignment score
-        seqA : str
-            Query sequence A
-        seqB : str
-            Query sequence B
-        seqA_align : str
-            Aligned version of query sequence A
-        seqB_align : str
-            Aligned version of query sequence B
-        D_open : int
-            Opening gap penalty
-        D_extend : int
-            Extension gap penalty
 
-    Methods
-    -------
-        read_scoring_file(scores_file)
-            Reads in scoring matrix from file
-        init_scoring_dict(scoring_mat=None, alphabet=None)
-            Creates a dictionary of substitution values from scoring matrix & alphabet
-        clean_sequence(seq, remove_unknown=False)
-            Makes sequence uppercase and removes unknown characters (or replaces with *)
-        align(seqA, seqB, sw=False)
-            Fills scoring and backtracing matrices 
-        backtrace(i, j, curr_back)
-            Backtracking steps shared by NW and SW
+    """
+    Parent class for :class:`align.algs.SmithWaterman` and :class:`align.algs.NeedlemanWunsch` that 
+    contains shared alignment functions and variables
+
+    :param gapB_mat: Matrix to keep track of scores for adding gaps to seqB 
+    :type gapB_mat: np.ndarray 
+    :param back: Matrix that keeps track of pointers for backtracking through match matrix
+    :type back: np.ndarray
+    :param back_A: Matrix that keeps track of pointers for backtracking through gap A matrix
+    :type back_A: np.ndarray
+    :param back_B: Matrix that keeps track of pointers for backtracking through gap B matrix
+    :type back_B: np.ndarray
+    :param opt_score: Variable to keep track of final alignment score
+    :type opt_score: int
+    :param seqA: Query sequence A
+    :type seqA: str
+    :param seqB: Query sequence B
+    :type seqB: str
+    :param seqA_align: Aligned version of query sequence A
+    :type seqA_align: str
+    :param seqB_align: Aligned version of query sequence B
+    :type seqB_align: str
+    :param D_open: Opening gap penalty
+    :type D_open: int
+    :param D_extend: Extension gap penalty
+    :type D_extend: int
         
     """
     
     def __init__( self, scoring_mat ):
         
         """
-        Parameters
-        ----------
-        scoring_mat : str
-            Pathlike str to .mat file with substitution matrix 
+        Constructor
+
+        :param scoring_mat: Pathlike str to .mat file with substitution matrix 
+        :type scoring_mat: str
+            
         """
 
         # init alignment and gap matrices
@@ -101,12 +84,10 @@ class PairwiseAligner:
         """
         Reads in file containing scoring matrix
         
-        Params:
-          scores_file (str): pathlike to .mat file with substitution matrix 
+        :param scores_file: Pathlike string to .mat file with substitution matrix 
+        :type scores_file: str
 
-        Returns:
-          scores_mat (np.ndarray) : n x n substitution matrix
-          alphabet (list) : list of n amino acids
+        :return: tuple containing n x n substitution matrix and a list of n amino acids
 
         """
         
@@ -131,12 +112,12 @@ class PairwiseAligner:
         """
         Read in scoring file and creating dictionary 
         
-        Params:
-          scoring_mat (np.ndarray) : n x n substitution matrix
-          alphabet (list) : list of n amino acids
+        :param scoring_mat: n x n substitution matrix
+        :type scoring_mat: np.ndarray
+        :param alphabet: list of n amino acids
+        :type alphabet: list
 
-        Returns:
-          scores_dict (dict) : dict that maps tuple of amino acids to score ( (aa1, aa2) -> score )
+        :return: dictionary that maps tuple of amino acid (aa1, aa2) to score
 
         """
         
@@ -163,14 +144,14 @@ class PairwiseAligner:
     
     def clean_sequence(self, seq, remove_unknown=False):
         """
-        Sequence -> uppercase and unknown characters replaced with * (or removed if remove_unknown=True)
+        Makes sequence uppercase and replaces unknown characters with * (or removes them if remove_unknown=True)
         
-        Params:
-          seq (str) : sequence to clean
-          remove_unknown (bool) : whether to replace (default=True) or remove unknown characters in query sequence
+        :param seq: sequence to clean
+        :type seq: str 
+        :param remove_unknown: Whether to replace or remove unknown characters in query sequence
+        :type remove_unknown: bool, default=False 
 
-        Returns:
-          seq (str) : cleaned sequence 
+        :return: cleaned sequence with all uppercase letters
 
         """
 
@@ -193,13 +174,12 @@ class PairwiseAligner:
         """
         Populates scoring and backtracing matrices with alignment scores and pointers
         
-        Params:
-          seqA (string): first sequence
-          seqB (string): second sequence
-          sw (bool) : whether to perform Smith-Waterman alignment (default, values clipped to 0)  
-
-        Returns:
-          N/A
+        :param seqA: First query sequence
+        :type seqA: str
+        :param seqB: Second query sequence
+        :type seqB: str
+        :param sw: whether to perform Smith-Waterman alignment (default, values clipped to 0)
+        :type sw: bool, default = False
 
         """
         # clean and store sequences
@@ -268,14 +248,14 @@ class PairwiseAligner:
         """
         Backtracking steps shared by SW and NW algorithms
         
-        Params:
-          i (int) : current row value
-          j (int) : current col value
-          curr_back (ndarray) : current backtracking matrix to consider
-
-        Returns:
-          i, j (int, int) : updated row and column values
-
+        :param i: current row value
+        :type i: int
+        :param j: current col value
+        :type j: int
+        :param curr_back: current pointer matrix to consider
+        :type curr_back: np.ndarray
+        
+        :return: tuple (i, j) containing updated row and column values
         """
 
         # update the sequence
@@ -304,28 +284,14 @@ class PairwiseAligner:
 class NeedlemanWunsch(PairwiseAligner):
     """
     Needleman-Wunsch global alignment algorithm
-    
-    Attributes
-    ----------
-        See PairwiseAligner for inherited attributes
-
-    Methods
-    -------
-        align(seqA, seqB, sw=False)
-            Initializes matrices and calls super.align()
-        backtrace(i, j, curr_back)
-            Backtracking steps unique to Needleman-Wunsch
-
-        See PairwiseAligner for additional, inherited methods 
     """
 
     def __init__( self, scoring_mat):
         """
-        Parameters
-        ----------
-        scoring_mat : str
-            Pathlike str to .mat file with substitution matrix 
-            Passed to parent __init__
+        Constructor
+
+        :param scoring_mat: Pathlike str to .mat file with substitution matrix passed to parent :class:`align.algs.PairwiseAligner`
+        :type str or matrix
         """
 
         PairwiseAligner.__init__(self, scoring_mat) 
@@ -336,15 +302,15 @@ class NeedlemanWunsch(PairwiseAligner):
         Perform Needleman-Wunch global alignment with affine gap scoring.
         Initializes matrices and calls parent align method for scoring
         
-        Params:
-            seqA (str): first sequence
-            seqB (str): second sequence
-            score_only (bool) : whether to return the aligned sequences with the score (default) or just the score
+        :param seqA: First query sequence
+        :type seqA: str
+        :param seqB: Second query sequence
+        :type seqA: str
+        :param score_only: Whether to return the aligned sequences with the score (default) or just the score
+        :type score_only: bool, default=False
 
-        Returns:
-            (str, str, int): gapped version of seqA, gapped version of seqB, alignment score
-            if score_only = True is passed, only the alignment score is returned
-
+        :return: Gapped version of seqA, gapped version of seqB, alignment score; if score_only = True is passed, only the alignment score is returned
+            
         """
 
         # create matrices for alignment scores and gaps 
@@ -367,12 +333,10 @@ class NeedlemanWunsch(PairwiseAligner):
         """
         Backtracing through scoring matrices using parameters for Needleman-Wunch global alignment parameters
         
-        Params:
-            score_only (bool) : whether to return the aligned sequences with the score (default) or just the score
+        :param score_only: Whether to return the aligned sequences with the score (default) or just the score
+        :type score_only: bool, default=False
 
-        Returns:
-            (str, str, int): gapped version of seqA, gapped version of seqB, alignment score
-            if score_only = True is passed, only the alignment score is returned
+        :return: Gapped version of seqA, gapped version of seqB, alignment score; if score_only = True is passed, only the alignment score is returned
 
         """
 
@@ -407,28 +371,15 @@ class NeedlemanWunsch(PairwiseAligner):
 class SmithWaterman(PairwiseAligner):
     """
     Smith-Waterman local alignment algorithm
-    
-    Attributes
-    ----------
-        See PairwiseAligner for inherited attributes
 
-    Methods
-    -------
-        align(seqA, seqB, sw=False)
-            Initializes matrices and calls super.align()
-        backtrace(i, j, curr_back)
-            Backtracking steps unique to Smith-Waterman
-
-        See PairwiseAligner for additional, inherited methods 
     """
 
     def __init__( self, scoring_mat):
         """
-        Parameters
-        ----------
-        scoring_mat : str
-            Pathlike str to .mat file with substitution matrix 
-            Passed to parent __init__
+        Constructor
+        
+        :param scoring_mat: Pathlike str to .mat file with substitution matrix passed to parent :class:`align.algs.PairwiseAligner`
+        :type str or matrix
         """
         PairwiseAligner.__init__(self, scoring_mat) 
 
@@ -438,14 +389,14 @@ class SmithWaterman(PairwiseAligner):
         Perform Smith-Waterman local alignment with affine gap scoring.
         Initializes matrices and calls parent align method for scoring
         
-        Params:
-            seqA (str): first sequence
-            seqB (str): second sequence
-            score_only (bool) : whether to return the aligned sequences with the score (default) or just the score
+        :param seqA: First query sequence
+        :type seqA: str
+        :param seqB: Second query sequence
+        :type seqA: str
+        :param score_only: Whether to return the aligned sequences with the score (default) or just the score
+        :type score_only: bool, default=False
 
-        Returns:
-            (str, str, int): gapped version of seqA, gapped version of seqB, alignment score
-            if score_only = True is passed, only the alignment score is returned
+        :return: Gapped version of seqA, gapped version of seqB, alignment score; if score_only = True is passed, only the alignment score is returned
 
         """
 
@@ -469,12 +420,10 @@ class SmithWaterman(PairwiseAligner):
         """
         Backtracing through scoring matrices using parameters for Smith-Waterman local alignment parameters
         
-        Params:
-            score_only (bool) : whether to return the aligned sequences with the score (default) or just the score
+        :param score_only: Whether to return the aligned sequences with the score (default) or just the score
+        :type score_only: bool, default=False
 
-        Returns:
-            (str, str, int): gapped version of seqA, gapped version of seqB, alignment score
-            if score_only = True is passed, only the alignment score is returned
+        :return: Gapped version of seqA, gapped version of seqB, alignment score; if score_only = True is passed, only the alignment score is returned
 
         """
 
@@ -512,11 +461,11 @@ def read_fasta(input_file):
     """
     Parses fasta file to retrieve fasta sequence
         
-    Params:
-        input_file (str) : path to fasta file
+    :param input_file: Path to fasta file
+    :type input_file: str
 
-    Returns:
-        (str, str) : (fasta header, fasta sequence)
+    :return: Gapped version of seqA, gapped version of seqB, alignment score; if score_only = True is passed, only the alignment score is returned
+
     """
 
     # read 

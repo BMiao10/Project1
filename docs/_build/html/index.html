@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to BMI203HW1’s documentation! &#8212; BMI203HW1  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">BMI203HW1  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to BMI203HW1’s documentation!</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-align.algs">
+<span id="welcome-to-bmi203hw1-s-documentation"></span><h1>Welcome to BMI203HW1’s documentation!<a class="headerlink" href="#module-align.algs" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="align.algs.PairwiseAligner">
+<em class="property">class </em><code class="sig-prename descclassname">align.algs.</code><code class="sig-name descname">PairwiseAligner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scoring_mat</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.PairwiseAligner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Parent class for <a class="reference internal" href="#align.algs.SmithWaterman" title="align.algs.SmithWaterman"><code class="xref py py-class docutils literal notranslate"><span class="pre">align.algs.SmithWaterman</span></code></a> and <a class="reference internal" href="#align.algs.NeedlemanWunsch" title="align.algs.NeedlemanWunsch"><code class="xref py py-class docutils literal notranslate"><span class="pre">align.algs.NeedlemanWunsch</span></code></a> that
+contains shared alignment functions and variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gapB_mat</strong> (<em>np.ndarray</em>) – Matrix to keep track of scores for adding gaps to seqB</p></li>
+<li><p><strong>back</strong> (<em>np.ndarray</em>) – Matrix that keeps track of pointers for backtracking through match matrix</p></li>
+<li><p><strong>back_A</strong> (<em>np.ndarray</em>) – Matrix that keeps track of pointers for backtracking through gap A matrix</p></li>
+<li><p><strong>back_B</strong> (<em>np.ndarray</em>) – Matrix that keeps track of pointers for backtracking through gap B matrix</p></li>
+<li><p><strong>opt_score</strong> (<em>int</em>) – Variable to keep track of final alignment score</p></li>
+<li><p><strong>seqA</strong> (<em>str</em>) – Query sequence A</p></li>
+<li><p><strong>seqB</strong> (<em>str</em>) – Query sequence B</p></li>
+<li><p><strong>seqA_align</strong> (<em>str</em>) – Aligned version of query sequence A</p></li>
+<li><p><strong>seqB_align</strong> (<em>str</em>) – Aligned version of query sequence B</p></li>
+<li><p><strong>D_open</strong> (<em>int</em>) – Opening gap penalty</p></li>
+<li><p><strong>D_extend</strong> (<em>int</em>) – Extension gap penalty</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="align.algs.PairwiseAligner.read_scoring_file">
+<code class="sig-name descname">read_scoring_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scores_file</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.PairwiseAligner.read_scoring_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads in file containing scoring matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scores_file</strong> (<em>str</em>) – Pathlike string to .mat file with substitution matrix</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple containing n x n substitution matrix and a list of n amino acids</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="align.algs.PairwiseAligner.init_scoring_dict">
+<code class="sig-name descname">init_scoring_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scoring_mat</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.PairwiseAligner.init_scoring_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in scoring file and creating dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scoring_mat</strong> (<em>np.ndarray</em>) – n x n substitution matrix</p></li>
+<li><p><strong>alphabet</strong> (<em>list</em>) – list of n amino acids</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary that maps tuple of amino acid (aa1, aa2) to score</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="align.algs.PairwiseAligner.clean_sequence">
+<code class="sig-name descname">clean_sequence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">remove_unknown</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.PairwiseAligner.clean_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes sequence uppercase and replaces unknown characters with * (or removes them if remove_unknown=True)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seq</strong> (<em>str</em>) – sequence to clean</p></li>
+<li><p><strong>remove_unknown</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to replace or remove unknown characters in query sequence</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>cleaned sequence with all uppercase letters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="align.algs.PairwiseAligner.align">
+<code class="sig-name descname">align</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seqA</span></em>, <em class="sig-param"><span class="n">seqB</span></em>, <em class="sig-param"><span class="n">sw</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.PairwiseAligner.align" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates scoring and backtracing matrices with alignment scores and pointers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seqA</strong> (<em>str</em>) – First query sequence</p></li>
+<li><p><strong>seqB</strong> (<em>str</em>) – Second query sequence</p></li>
+<li><p><strong>sw</strong> (<em>bool</em><em>, </em><em>default = False</em>) – whether to perform Smith-Waterman alignment (default, values clipped to 0)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="align.algs.PairwiseAligner.backtrace">
+<code class="sig-name descname">backtrace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">j</span></em>, <em class="sig-param"><span class="n">curr_back</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.PairwiseAligner.backtrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Backtracking steps shared by SW and NW algorithms</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> (<em>int</em>) – current row value</p></li>
+<li><p><strong>j</strong> (<em>int</em>) – current col value</p></li>
+<li><p><strong>curr_back</strong> (<em>np.ndarray</em>) – current pointer matrix to consider</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple (i, j) containing updated row and column values</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="align.algs.NeedlemanWunsch">
+<em class="property">class </em><code class="sig-prename descclassname">align.algs.</code><code class="sig-name descname">NeedlemanWunsch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scoring_mat</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.NeedlemanWunsch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#align.algs.PairwiseAligner" title="align.algs.PairwiseAligner"><code class="xref py py-class docutils literal notranslate"><span class="pre">align.algs.PairwiseAligner</span></code></a></p>
+<p>Needleman-Wunsch global alignment algorithm</p>
+<dl class="py method">
+<dt id="align.algs.NeedlemanWunsch.align">
+<code class="sig-name descname">align</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seqA</span></em>, <em class="sig-param"><span class="n">seqB</span></em>, <em class="sig-param"><span class="n">score_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.NeedlemanWunsch.align" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform Needleman-Wunch global alignment with affine gap scoring.
+Initializes matrices and calls parent align method for scoring</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seqA</strong> (<em>str</em>) – First query sequence</p></li>
+<li><p><strong>seqB</strong> – Second query sequence</p></li>
+<li><p><strong>score_only</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to return the aligned sequences with the score (default) or just the score</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Gapped version of seqA, gapped version of seqB, alignment score; if score_only = True is passed, only the alignment score is returned</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="align.algs.NeedlemanWunsch.backtrace">
+<code class="sig-name descname">backtrace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">score_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.NeedlemanWunsch.backtrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Backtracing through scoring matrices using parameters for Needleman-Wunch global alignment parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>score_only</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to return the aligned sequences with the score (default) or just the score</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Gapped version of seqA, gapped version of seqB, alignment score; if score_only = True is passed, only the alignment score is returned</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="align.algs.SmithWaterman">
+<em class="property">class </em><code class="sig-prename descclassname">align.algs.</code><code class="sig-name descname">SmithWaterman</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scoring_mat</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.SmithWaterman" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#align.algs.PairwiseAligner" title="align.algs.PairwiseAligner"><code class="xref py py-class docutils literal notranslate"><span class="pre">align.algs.PairwiseAligner</span></code></a></p>
+<p>Smith-Waterman local alignment algorithm</p>
+<dl class="py method">
+<dt id="align.algs.SmithWaterman.align">
+<code class="sig-name descname">align</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seqA</span></em>, <em class="sig-param"><span class="n">seqB</span></em>, <em class="sig-param"><span class="n">score_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.SmithWaterman.align" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform Smith-Waterman local alignment with affine gap scoring.
+Initializes matrices and calls parent align method for scoring</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seqA</strong> (<em>str</em>) – First query sequence</p></li>
+<li><p><strong>seqB</strong> – Second query sequence</p></li>
+<li><p><strong>score_only</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to return the aligned sequences with the score (default) or just the score</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Gapped version of seqA, gapped version of seqB, alignment score; if score_only = True is passed, only the alignment score is returned</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="align.algs.SmithWaterman.backtrace">
+<code class="sig-name descname">backtrace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">score_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.SmithWaterman.backtrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Backtracing through scoring matrices using parameters for Smith-Waterman local alignment parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>score_only</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to return the aligned sequences with the score (default) or just the score</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Gapped version of seqA, gapped version of seqB, alignment score; if score_only = True is passed, only the alignment score is returned</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="align.algs.read_fasta">
+<code class="sig-prename descclassname">align.algs.</code><code class="sig-name descname">read_fasta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_file</span></em><span class="sig-paren">)</span><a class="headerlink" href="#align.algs.read_fasta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses fasta file to retrieve fasta sequence</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_file</strong> (<em>str</em>) – Path to fasta file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Gapped version of seqA, gapped version of seqB, alignment score; if score_only = True is passed, only the alignment score is returned</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to BMI203HW1’s documentation!</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">BMI203HW1  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to BMI203HW1’s documentation!</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Brenda Miao.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>
