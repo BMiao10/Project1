@@ -2,6 +2,7 @@
 ## Due 01/27/2021
 
 ![BuildStatus](https://github.com/BMiao10/Project1/workflows/HW1/badge.svg?event=push)
+![HW1](https://github.com/BMiao10/Project1/workflows/HW1/badge.svg)
 
 In this assignment, you will implement two classical alignment algorithms and then evaluate each algorithm’s performance with a range of parameters. There are two parts to this assignment and Part 2 requires completion of Part 1. We recommend reading through both Part 1 and Part 2 before beginning this assignment. 
 
