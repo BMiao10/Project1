@@ -1,7 +1,7 @@
 # Project 1 - Sequence Alignment
 ## Due 01/27/2021
 
-![BuildStatus](https://github.com/bmiao10/Project1/workflows/HW1/badge.svg?event=push)
+![BuildStatus](https://github.com/BMiao10/Project1/workflows/HW1/badge.svg?event=push)
 
 In this assignment, you will implement two classical alignment algorithms and then evaluate each algorithm’s performance with a range of parameters. There are two parts to this assignment and Part 2 requires completion of Part 1. We recommend reading through both Part 1 and Part 2 before beginning this assignment. 
 
@@ -12,24 +12,32 @@ In this assignment, you will implement two classical alignment algorithms and th
 ```
 .
 ├── README.md
-├── data
+├── Brenda_Miao_BMI203_HW1.ipynb
 │   ...
-├── hw2skeleton
+├── align
 │   ├── __init__.py
 │   ├── __main__.py
-│   ├── cluster.py
-│   ├── io.py
-│   └── utils.py
+│   └── algs.py
+│  
+├── docs
+│   └── build
+│   	  └── html
+│              └── index.html
+│   ...
+├── output
+│   ├── Q2-1_pair_scores.csv
+│   ├── Q2-5_values.csv
+│   └── Q2-6_scores.csv
 └── test
-    ├── test_cluster.py
-    └── test_io.py
-```
+    └── test_align.py
 
-### main
-Runs all code in align/\_\_main\_\_.py, useful for part 2
 ```
-python -m align
-```
+### sphinx documentation
+Located in docs folder
+
+### part I and II
+Code, figures, and questions are answered in Jupyter notebook
+Output for certain questions are stored in output folder
 
 ### testing
 Testing is as simple as running
